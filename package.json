@@ -1,1 +1,18 @@
-{"encoding": "base64", "content": "ewogICJuYW1lIjogImR5bmFtaWMtYmxvZy1wbGF0Zm9ybSIsCiAgInByaXZhdGUiOiB0cnVlLAogICJzY3JpcHRzIjogewogICAgImJ1aWxkIjogInR1cmJvIHJ1biBidWlsZCIsCiAgICAiZGV2IjogInR1cmJvIHJ1biBkZXYiLAogICAgImxpbnQiOiAidHVyYm8gcnVuIGxpbnQiLAogICAgImZvcm1hdCI6ICJwcmV0dGllciAtLXdyaXRlIFwiKiovKi57dHMsdHN4LG1kfVwiIgogIH0sCiAgImRldkRlcGVuZGVuY2llcyI6IHsKICAgICJwcmV0dGllciI6ICJeMy4xLjAiLAogICAgInR1cmJvIjogIl4xLjExLjMiCiAgfSwKICAicGFja2FnZU1hbmFnZXIiOiAicG5wbUA4LjkuMCIsCiAgImVuZ2luZXMiOiB7CiAgICAibm9kZSI6ICI+PTIwLjExLjEiCiAgfQp9"}
+{
+  "name": "dynamic-blog-platform",
+  "private": true,
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+  },
+  "devDependencies": {
+    "prettier": "^3.1.0",
+    "turbo": "^1.11.3"
+  },
+  "packageManager": "pnpm@8.9.0",
+  "engines": {
+    "node": ">=20.11.1"
+  }
+}
