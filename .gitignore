@@ -27,9 +27,45 @@ yarn-error.log*
 .env.development.local
 .env.test.local
 .env.production.local
+.env.example
 
 # turbo
 .turbo
 
 # vercel
 .vercel
+
+# docker
+docker-volumes/
+.docker/
+*.log
+docker-compose.override.yml
+
+# database
+*.sqlite
+*.sqlite3
+*.db
+postgres-data/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Temporal
+temporal-data/
+
+# OS
+Thumbs.db
+.DS_Store
+.directory
+Desktop.ini
+
+# pnpm
+.pnpm-store/
+pnpm-debug.log*
+
+# build output
+apps/*/dist/
+packages/*/dist/
