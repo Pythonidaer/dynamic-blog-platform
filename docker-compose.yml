@@ -1,34 +1,57 @@
 services:
   postgres:
-    image: postgres:15
-    container_name: blog-postgres
+    image: postgres:15-alpine
+    container_name: blog_postgres
     environment:
-      POSTGRES_USER: temporal
-      POSTGRES_PASSWORD: temporalpassword
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: temporal
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    networks:
+      - blog_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   temporal:
-    image: temporalio/auto-setup:latest
-    container_name: temporal
-    depends_on:
-      - postgres
+    container_name: blog_temporal
+    image: temporalio/auto-setup:1.22.3
     environment:
-      DB: "postgres12"
-      DB_PORT: 5432
-      DB_USER: temporal
-      DB_PASSWORD: temporalpassword
-      DB_NAME: temporal
-      POSTGRES_SEEDS: postgres
+      - DB=postgresql
+      - DB_PORT=5432
+      - POSTGRES_USER=${TEMPORAL_POSTGRES_USER}
+      - POSTGRES_PWD=${TEMPORAL_POSTGRES_PASSWORD}
+      - POSTGRES_SEEDS=postgres
+      - ENABLE_ES=false
     ports:
       - "7233:7233"
-    restart: on-failure
-    volumes:
-      - temporal_logs:/var/log/temporal
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - blog_network
+
+  temporal-ui:
+    container_name: temporal_ui
+    image: temporalio/ui:2.21.3
+    environment:
+      - TEMPORAL_ADDRESS=temporal:7233
+      - TEMPORAL_CORS_ORIGINS=http://localhost:3000
+    ports:
+      - "8080:8080"
+    depends_on:
+      - temporal
+    networks:
+      - blog_network
+
+networks:
+  blog_network:
+    driver: bridge
 
 volumes:
   postgres_data:
-  temporal_logs:
