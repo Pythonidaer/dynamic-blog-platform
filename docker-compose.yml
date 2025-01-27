@@ -1,0 +1,34 @@
+services:
+  postgres:
+    image: postgres:15
+    container_name: blog-postgres
+    environment:
+      POSTGRES_USER: temporal
+      POSTGRES_PASSWORD: temporalpassword
+      POSTGRES_DB: temporal
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  temporal:
+    image: temporalio/auto-setup:latest
+    container_name: temporal
+    depends_on:
+      - postgres
+    environment:
+      DB: "postgres12"
+      DB_PORT: 5432
+      DB_USER: temporal
+      DB_PASSWORD: temporalpassword
+      DB_NAME: temporal
+      POSTGRES_SEEDS: postgres
+    ports:
+      - "7233:7233"
+    restart: on-failure
+    volumes:
+      - temporal_logs:/var/log/temporal
+
+volumes:
+  postgres_data:
+  temporal_logs:
